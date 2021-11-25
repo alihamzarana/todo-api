@@ -6,7 +6,7 @@ const auth = require("../middleware/auth");
 
 // static routes
 router.get("/", todoContrller.getAllTodo);
-router.post("/", todoContrller.postTodo);
+router.post("/", auth.upload, todoContrller.postTodo);
 //  dynamic
 router.get("/:id", todoContrller.getSingleTodo);
 router.put("/:id", todoContrller.updateTodo);
