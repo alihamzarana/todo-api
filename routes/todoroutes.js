@@ -10,7 +10,7 @@ router.post("/", auth.upload, todoContrller.postTodo);
 //  dynamic
 router.get("/:id", todoContrller.getSingleTodo);
 router.put("/:id", todoContrller.updateTodo);
-router.delete("/:id", auth.verifyToken, todoContrller.deleteTodo);
+router.delete("/:id", todoContrller.deleteTodo);
 
 module.exports = router;
 

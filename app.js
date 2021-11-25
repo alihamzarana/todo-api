@@ -1,17 +1,23 @@
 const express = require("express");
 
 const mongoose = require("mongoose");
-const jwt = require("jsonwebtoken");
+// const dotenv = require("dotenv");
+require("dotenv").config();
+
+// const jwt = require("jsonwebtoken");
+// const dotenv = require("dotenv");
 
 const app = express();
 const cors = require("cors");
 const todoRoutes = require("./routes/todoroutes");
 const userRoutes = require("./routes/userRoutes");
 
-const PORT = process.env.PORT || 3000;
+// dotenv.config();
 
+// const port = process.env.PORT || 3000;
 
-app.listen(PORT);
+console.log("port env", process.env.PORT);
+
 app.use(
   express.urlencoded({
     extended: true,
@@ -21,34 +27,19 @@ app.use(express.json());
 app.use(express.static("./public"));
 app.use(cors());
 
-// app.post('/api/login', (req, res) =>{
-//      const user = {
-//        _id: 1,
-//        userName: "adsd",
-//        email: "asd@gmail.com",
-//      };
-//      jwt.sign({ user }, "secretkey", (err, token) => {
-//        res.json({
-//          token: token,
-//        });
-//      });
-// })
-
-// todo route
-
-// app.get('/',(req, res) =>{
-//     res.send('helllo')
-// })
 app.use("/todo", todoRoutes);
 app.use("/user", userRoutes);
 
-// const dbURI = "mongodb://localhost:27017/node-todoapp"; user:64CNzQ1lWN5BLtiT
-const dbURI =
-  "mongodb+srv://user:64CNzQ1lWN5BLtiT@node.8jzbu.mongodb.net/node-todoapp?retryWrites=true&w=majority";
+// // const dbURI = "mongodb://localhost:27017/node-todoapp"; user:64CNzQ1lWN5BLtiT
+// const DB_URI =
+//   "mongodb+srv://user:64CNzQ1lWN5BLtiT@node.8jzbu.mongodb.net/node-todoapp?retryWrites=true&w=majority";
+
+app.listen(process.env.PORT || 3000);
+console.log("DB_URI envvvv", process.env.DB_URI);
 
 mongoose
-  .connect(dbURI)
+  .connect(process.env.DB_URI)
   .then(() => {
     console.log("db connected");
   })
-  .catch((error) => console.log(error));
+  .catch((error) => console.log("db error", error));
