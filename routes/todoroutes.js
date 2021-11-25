@@ -1,34 +1,17 @@
-const express = require('express')
-const router = express.Router()
-const todoContrller = require('../controller/todoController')
+const express = require("express");
+const router = express.Router();
+const todoContrller = require("../controller/todoController");
+const auth = require("../middleware/auth");
+// const multer = require("../middleware/multer");
 
-const jwt = require("jsonwebtoken");
-
-const verifyToken = (req, res, next) => {
-  const token = req.headers.authorization.split(" ")[1];
-  console.log("token is here",token)
-  console.log("header request",req.headers)
-  const decodedToken = jwt.verify(token, "secretkey");
-  console.log("decodeToken", decodedToken);
-  const userId = decodedToken.user._id;
-  console.log("userId", userId);
-  if (req.body.userId && req.body.userId !== userId) {
-    res.json({
-      message: " invalid user",
-    });
-  } else {
-    next();
-  }
-};
 // static routes
-router.get('/', verifyToken, todoContrller.getAllTodo) 
-router.post("/", verifyToken,todoContrller.postTodo);
+router.get("/", todoContrller.getAllTodo);
+router.post("/", todoContrller.postTodo);
+//  dynamic
+router.get("/:id", todoContrller.getSingleTodo);
+router.put("/:id", todoContrller.updateTodo);
+router.delete("/:id", auth.verifyToken, todoContrller.deleteTodo);
 
-//  dynamic 
-router.get('/:id', todoContrller.getSingleTodo)
-router.put('/:id', verifyToken, todoContrller.updateTodo)
-router.delete('/:id', todoContrller.deleteTodo)
+module.exports = router;
 
-module.exports = router
-  
-  
+// [auth.upload, auth.verifyToken];

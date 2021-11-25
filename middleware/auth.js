@@ -1,26 +1,38 @@
-
 const jwt = require("jsonwebtoken");
-
+const multer = require("multer");
+const path = require("path");
 
 const verifyToken = (req, res, next) => {
-  //get auth header value
-  const bearerHeader = req.headers["authorization"];
+  const token = req.headers.authorization.split(" ")[1];
+  console.log("token is here", token);
+  console.log("header request", req.headers);
+  const decodedToken = jwt.verify(token, "secretkey");
+  console.log("decodeToken", decodedToken);
+  const userId = decodedToken.payload._id;
+  console.log("userId", userId);
 
-  // check if bearer is undefined
-
-  if (typeof bearerHeader !== "undefined") {
-    const bearer = bearerHeader.split(" ");
-    // get token from string
-
-    const bearToken = bearer[1];
-    req.token = bearToken;
-
-    next();
-  } else {
-    res.status(403).json({
-      message: " user not authneticated",
+  console.log("req.body.userId", req.body.userId);
+  if (req.body.userId !== userId) {
+    res.json({
+      message: "invalid user",
     });
+  } else {
+    next();
   }
 };
 
-exports.module = {verifyToken}
+const storage = multer.diskStorage({
+  destination: "./public/uploads",
+  filename: (req, file, cb) => {
+    cb(
+      null,
+      file.fieldnamec + "-" + Date.now() + path.extname(file.originalname)
+    );
+  },
+});
+
+const upload = multer({
+  storage: storage,
+}).single("image");
+
+module.exports = { verifyToken, upload };
