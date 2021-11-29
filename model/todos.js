@@ -20,9 +20,9 @@ const todoSchema = new Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
     },
-    image:{
+    image: {
       type: String,
-      requires: false+,
+      requires: false,
     },
   },
   { timestamps: true }

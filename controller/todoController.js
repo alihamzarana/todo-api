@@ -224,7 +224,6 @@ const updateTodo = async (req, res) => {
     image: req.file?.filename ? req.file.filename : null,
   };
 
-
   if (updatedData.image == null) {
     delete updatedData.image;
   }
