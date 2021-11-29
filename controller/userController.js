@@ -232,7 +232,7 @@ const userLogin = async (req, res) => {
           _id: user._id,
         };
         console.log("user is valid", user);
-   
+
         const token = await jwt.sign({ payload }, "secretkey");
         if (token) {
           res.json({

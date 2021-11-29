@@ -22,7 +22,7 @@ const todoSchema = new Schema(
     },
     image:{
       type: String,
-      requires: false,
+      requires: false+,
     },
   },
   { timestamps: true }
