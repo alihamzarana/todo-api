@@ -215,6 +215,7 @@ const updateTodo = async (req, res) => {
   console.log(" id for update", id);
 
   console.log("image update", req.file);
+  console.log("body request", req.body);
 
   const updatedData = {
     title: req.body.title,
@@ -235,7 +236,7 @@ const updateTodo = async (req, res) => {
   //   delete updatedData.image;
   // }
 
-  // console.log("updatedData", updatedData);
+  console.log("updatedData", updatedData);
   try {
     const todo = await todoService.updatedTodo(id, updatedData);
 
@@ -248,15 +249,15 @@ const updateTodo = async (req, res) => {
     } else {
       res.json({
         status: "error",
-        message: err,
+        message: "not updated",
       });
     }
   } catch (err) {
     console.log("errors", err);
-    res.json({
-      status: "error",
-      message: "not updated",
-    });
+    // res.json({
+    //   status: "error",
+    //   message: "not updated",
+    // });
   }
 };
 
