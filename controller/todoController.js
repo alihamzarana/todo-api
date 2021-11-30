@@ -1,6 +1,7 @@
 // /todo_update, todo_create_get, todo_create_post, todo_delete
 
 const todoService = require("../services/TodoService");
+const cloudinary = require("../middleware/cloudinary");
 // const TODO = require("../model/todos");
 
 // const getAllTodo = (req, res) => {
@@ -162,14 +163,18 @@ const getSingleTodo = async (req, res) => {
 const postTodo = async (req, res) => {
   console.log("image upload", req.file);
   try {
+    const uploadImage = req.file?.filename
+      ? await cloudinary.uploader.upload(req.file.path)
+      : null;
+    // console.log("result of file upload", uploadImage);
     let todoData = {
       title: req.body.title,
       isComplete: req.body.isComplete,
       description: req.body.description,
       userId: req.body.userId,
-      image: req.file?.filename ? req.file.filename : null,
+      image: uploadImage?.url,
     };
-    // console.log("todo controller data", todoData);
+    console.log("todo controller data", todoData);
 
     const result = await todoService.createTodo(todoData);
 
