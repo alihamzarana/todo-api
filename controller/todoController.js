@@ -222,12 +222,16 @@ const updateTodo = async (req, res) => {
   console.log("image update", req.file);
   console.log("body request", req.body);
 
+      const uploadImage = req.file?.filename
+        ? await cloudinary.uploader.upload(req.file.path)
+        : null;
+
   const updatedData = {
     title: req.body.title,
     isComplete: req.body.isComplete,
     description: req.body.description,
     userId: req.body.userId,
-    image: req.file?.filename ? req.file.filename : null,
+    image: uploadImage?.url,
   };
 
   if (updatedData.image == null) {
